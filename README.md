@@ -172,30 +172,5 @@ GeoPulse/
 
 ---
 
-## 7. Getting Started (Day 1 Setup)
-
-### Step 1: Create and Activate Virtual Environment
-```powershell
-# Using the installed Python 3.12 binary:
-& "C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe" -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-### Step 2: Install Day 1 Dependencies
-```powershell
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-```
-
-### Step 3: Verify Setup
-```powershell
-# Run basic tests
-pytest tests/
-```
-
-*Note: For PySpark, Apache Sedona, and Snowflake setup in subsequent phases, refer to [docs/setup_guide.md](docs/setup_guide.md).*
-
----
-
-## 8. License
+## 7. License
 Academic Engineering Project – Designed and developed for demonstration and educational purposes.
