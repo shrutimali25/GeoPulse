@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GPSPingTelemetry",
+  "description": "Standard schema for raw mobility GPS pings ingested into GeoPulse pipeline",
+  "type": "object",
+  "required": [
+    "ping_id",
+    "device_id",
+    "timestamp_utc",
+    "latitude",
+    "longitude",
+    "horizontal_accuracy_meters",
+    "speed_mps"
+  ],
+  "properties": {
+    "ping_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Globally unique identifier for the telemetry ping"
+    },
+    "device_id": {
+      "type": "string",
+      "pattern": "^DEV_[A-Z0-9]{8}$",
+      "description": "Anonymized persistent identifier for the mobile device"
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of the recorded ping"
+    },
+    "latitude": {
+      "type": "number",
+      "minimum": -90.0,
+      "maximum": 90.0,
+      "description": "WGS84 latitude coordinate in decimal degrees"
+    },
+    "longitude": {
+      "type": "number",
+      "minimum": -180.0,
+      "maximum": 180.0,
+      "description": "WGS84 longitude coordinate in decimal degrees"
+    },
+    "altitude_meters": {
+      "type": ["number", "null"],
+      "description": "Estimated altitude above sea level in meters"
+    },
+    "horizontal_accuracy_meters": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "description": "68% confidence circle radius in meters (GPS CEP)"
+    },
+    "speed_mps": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 70.0,
+      "description": "Instantaneous ground speed in meters per second"
+    },
+    "heading_degrees": {
+      "type": ["number", "null"],
+      "minimum": 0.0,
+      "maximum": 360.0,
+      "description": "Direction of travel in degrees clockwise from true north"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "type": "FeatureCollection",
+  "name": "Koramangala_Retail_POIs",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "store_id": "RET_MALL_FORUM_001",
+        "store_name": "Forum Mall Koramangala",
+        "category": "Shopping Mall",
+        "gross_leasable_sqft": 350000,
+        "floors": 5
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [77.6105, 12.9340],
+            [77.6115, 12.9340],
+            [77.6115, 12.9350],
+            [77.6105, 12.9350],
+            [77.6105, 12.9340]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "store_id": "RET_CAFE_STARBUCKS_002",
+        "store_name": "Starbucks 80ft Road",
+        "category": "Cafe & Dining",
+        "seating_capacity": 45,
+        "drive_through": false
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [77.6212, 12.9370],
+            [77.6218, 12.9370],
+            [77.6218, 12.9374],
+            [77.6212, 12.9374],
+            [77.6212, 12.9370]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "store_id": "RET_ELEC_CROMA_003",
+        "store_name": "Croma Electronics 100ft Rd",
+        "category": "Electronics",
+        "gross_leasable_sqft": 12000,
+        "floors": 2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [77.6285, 12.9295],
+            [77.6292, 12.9295],
+            [77.6292, 12.9301],
+            [77.6285, 12.9301],
+            [77.6285, 12.9295]
+          ]
+        ]
+      }
+    }
+  ]
+}

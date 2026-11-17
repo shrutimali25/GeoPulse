@@ -1,0 +1,18 @@
+# ==============================================================================
+# GeoPulse Development, Testing & Quality Assurance Dependencies
+# Install via: pip install -r requirements-dev.txt
+# ==============================================================================
+
+# Testing Frameworks
+pytest>=8.1.0
+pytest-cov>=5.0.0
+pytest-mock>=3.14.0
+
+# Code Formatting & Linting
+ruff>=0.4.0
+black>=24.4.0
+isort>=5.13.0
+mypy>=1.9.0
+
+# Pre-commit Hooks
+pre-commit>=3.7.0

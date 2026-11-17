@@ -1,0 +1,17 @@
+# ==============================================================================
+# GeoPulse Snowflake & Analytics Engineering Dependencies
+# Install when connecting to Snowflake & building dbt models:
+# pip install -r requirements-snowflake.txt
+# ==============================================================================
+
+# Snowflake Connectors & Snowpark
+snowflake-connector-python[pandas]>=3.9.0
+snowflake-snowpark-python>=1.15.0
+
+# dbt (Data Build Tool) for Snowflake
+dbt-core>=1.7.0
+dbt-snowflake>=1.7.0
+
+# Lightweight API serving layer (FastAPI)
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0

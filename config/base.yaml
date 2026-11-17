@@ -1,0 +1,96 @@
+# ==============================================================================
+# GeoPulse Core Project Configuration
+# ==============================================================================
+
+project:
+  name: "GeoPulse"
+  version: "0.1.0"
+  description: "Hyper-Local Retail Mobility Analytics"
+
+study_zone:
+  id: "IND_BLR_KORAMANGALA"
+  name: "Koramangala Commercial & Retail District"
+  city: "Bengaluru"
+  country: "India"
+  bounding_box:
+    min_lat: 12.9200
+    max_lat: 12.9450
+    min_lon: 77.6100
+    max_lon: 77.6400
+  center:
+    lat: 12.9345
+    lon: 77.6250
+
+telemetry_simulation:
+  random_seed: 42
+  devices:
+    total_count: 500
+    categories:
+      daily_shoppers: 0.40
+      office_commuters: 0.35
+      transient_pedestrians: 0.25
+  temporal:
+    sampling_interval_seconds: 30
+    default_duration_hours: 24
+    peak_hours: [12, 13, 18, 19, 20, 21]
+  spatial_noise:
+    gps_drift_std_meters: 4.5
+    multipath_error_probability: 0.05
+    multipath_max_offset_meters: 15.0
+
+dwell_time_criteria:
+  min_dwell_minutes: 5
+  max_dwell_minutes: 240
+  speed_threshold_kmh: 3.0
+
+retail_stores:
+  - store_id: "RET_MALL_FORUM_001"
+    name: "Forum Mall Koramangala"
+    category: "Shopping Mall"
+    latitude: 12.9345
+    longitude: 77.6110
+    polygon_buffer_meters: 65.0
+  - store_id: "RET_CAFE_STARBUCKS_002"
+    name: "Starbucks 80ft Road"
+    category: "Cafe & Dining"
+    latitude: 12.9372
+    longitude: 77.6215
+    polygon_buffer_meters: 25.0
+  - store_id: "RET_ELEC_CROMA_003"
+    name: "Croma Electronics 100ft Rd"
+    category: "Electronics"
+    latitude: 12.9298
+    longitude: 77.6288
+    polygon_buffer_meters: 35.0
+  - store_id: "RET_GROC_NATURES_BASKET_004"
+    name: "Nature's Basket 4th Block"
+    category: "Supermarket"
+    latitude: 12.9312
+    longitude: 77.6320
+    polygon_buffer_meters: 30.0
+  - store_id: "RET_FASH_ZARA_005"
+    name: "Zara Koramangala Hub"
+    category: "Apparel"
+    latitude: 12.9350
+    longitude: 77.6115
+    polygon_buffer_meters: 30.0
+
+spark_sedona:
+  master: "local[*]"
+  app_name: "GeoPulse-Spatial-Engine"
+  driver_memory: "4g"
+  executor_memory: "4g"
+  sql_shuffle_partitions: 8
+  sedona_version: "1.6.0"
+
+snowflake:
+  database: "GEOPULSE_DB"
+  warehouse: "COMPUTE_WH"
+  schemas:
+    raw: "RAW_STAGE"
+    staging: "STAGING"
+    marts: "ANALYTICS"
+  tables:
+    raw_pings: "RAW_GPS_TELEMETRY"
+    store_metadata: "DIM_RETAIL_STORES"
+    store_visits: "FCT_STORE_VISITS"

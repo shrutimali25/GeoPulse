@@ -1,0 +1,25 @@
+# ==============================================================================
+# GeoPulse Spatial & Distributed Processing Dependencies
+# NOTE: PySpark & Apache Sedona require Java runtime environment (Java 11 or 17 recommended).
+# On Windows, PySpark requires winutils.exe and hadoop.dll.
+# Install after configuring Java runtime: pip install -r requirements-spatial.txt
+# ==============================================================================
+
+# Spatial Core & Geometry Libraries
+shapely>=2.0.4
+geopandas>=0.14.3
+pyproj>=3.6.1
+fiona>=1.9.6
+
+# Hexagonal Spatial Indexing
+h3>=3.7.6,<4.0.0
+
+# Apache Arrow & Parquet File Storage
+pyarrow>=15.0.0
+
+# Distributed Spatial Processing (PySpark & Sedona)
+pyspark==3.5.1
+apache-sedona>=1.6.0
+keplergl>=0.3.2
+matplotlib>=3.8.4
+folium>=0.16.0

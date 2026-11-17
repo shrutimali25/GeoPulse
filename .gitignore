@@ -1,0 +1,116 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+!.template.env
+*credentials*.json
+*.pem
+*.key
+profiles.yml
+
+# Testing & Quality
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+
+# Data Directories (Exclude raw and processed large datasets)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+*.parquet
+*.csv
+*.feather
+*.avro
+*.orc
+*.sqlite3
+
+# Large Spatial Datasets (Keep sample schemas and reference GeoJSON only)
+*.shp
+*.shx
+*.dbf
+*.prj
+*.gpkg
+
+# Apache Spark & Hadoop
+derby.log
+metastore_db/
+spark-warehouse/
+winutils.exe
+hadoop.dll
+
+# Apache Airflow
+airflow.db
+airflow.cfg
+logs/
+airflow-webserver.pid
+standalone_admin_password.txt
+
+# dbt
+member2_analytics_viz/dbt_transforms/target/
+member2_analytics_viz/dbt_transforms/dbt_packages/
+member2_analytics_viz/dbt_transforms/logs/
+target/
+dbt_packages/
+
+# Frontend / Node / React
+node_modules/
+member2_analytics_viz/dashboard/node_modules/
+member2_analytics_viz/dashboard/dist/
+member2_analytics_viz/dashboard/.vite/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
