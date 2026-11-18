@@ -69,6 +69,38 @@
 - [x] All 16 unit tests passing cleanly.
 
 ### 2. Next Steps
+- [x] Implement robust GPS data cleaning and preprocessing pipeline (Day 3).
 - [ ] Add remaining retail POI boundaries to `data/spatial/mall_boundaries.geojson`.
 - [ ] Install Phase 2 dependencies (`pyarrow`, `pyspark`, `apache-sedona`) for distributed spatial processing.
 - [ ] Implement PySpark and Apache Sedona point-in-polygon spatial join pipeline (`ST_Contains`).
+
+---
+
+## Day 3: GPS Data Cleaning and Preprocessing
+**Date**: November 18, 2026  
+**Engineering Domain**: Data Engineering & Preprocessing Pipeline  
+**Status**: Completed & Verified
+
+### 1. Deliverables Completed
+- [x] Implemented `GPSDataPreprocessor` and `CleaningSummary` in `src/member1_data_eng/validation/preprocessor.py`.
+- [x] Recursively discovers and ingests raw GPS JSONL files from `data/raw/` without modifying raw files.
+- [x] Safely catches malformed JSON records and lines without halting the pipeline.
+- [x] Validates required presence and non-null values for mandatory telemetry fields.
+- [x] Normalizes varied timestamp formats (ISO with offset, Z, Unix epochs) into timezone-aware UTC ISO strings.
+- [x] Reuses `DataQualityValidator` and `GPSPingRecord` with dynamic study zone bounds from `config/base.yaml`.
+- [x] Detects duplicate ping IDs and duplicate device-timestamp readings.
+- [x] Preserves `is_synthetic=True` and `profile_type` across all processed records.
+- [x] Streams valid records to `data/processed/cleaned_gps_data.csv`.
+- [x] Audits rejected records with granular error categories and reasons to `data/processed/rejected_gps_data.csv`.
+- [x] Generates statistical cleaning summary and writes to `data/processed/cleaning_summary.json`.
+- [x] Authored 9 new unit tests in `tests/test_preprocessor.py` (25/25 total test suite passing).
+
+### 2. Cleaning Results on Raw Dataset
+- **Total Input Records**: 300
+- **Valid Records**: 300
+- **Rejected Records**: 0 (0 duplicates, 0 missing/invalid)
+- **Cleaning Success Rate**: 100.0%
+- **Outputs Produced**:
+  - `data/processed/cleaned_gps_data.csv`
+  - `data/processed/rejected_gps_data.csv`
+  - `data/processed/cleaning_summary.json`
