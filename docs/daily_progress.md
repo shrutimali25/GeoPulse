@@ -1,8 +1,8 @@
-# GeoPulse Daily Work Progress Tracker
+﻿# GeoPulse Daily Work Progress Tracker
 
 ## Day 1: System Inspection, Architecture Design & Project Scaffolding
-**Date**: November 17, 2026  
-**Engineering Domain**: Data Engineering & Platform Architecture  
+**Date**: November 17, 2026
+**Engineering Domain**: Data Engineering & Platform Architecture
 **Status**: Completed
 
 ### 1. Workspace & Environment Audit Findings
@@ -53,8 +53,8 @@
 ---
 
 ## Day 2 (Phase 1): Synthetic GPS Trajectory Generation Pipeline
-**Date**: November 17, 2026  
-**Engineering Domain**: Data Engineering & Spatial Pipeline  
+**Date**: November 17, 2026
+**Engineering Domain**: Data Engineering & Spatial Pipeline
 **Status**: Completed & Verified
 
 ### 1. Deliverables Completed
@@ -77,8 +77,8 @@
 ---
 
 ## Day 3: GPS Data Cleaning and Preprocessing
-**Date**: November 18, 2026  
-**Engineering Domain**: Data Engineering & Preprocessing Pipeline  
+**Date**: November 18, 2026
+**Engineering Domain**: Data Engineering & Preprocessing Pipeline
 **Status**: Completed & Verified
 
 ### 1. Deliverables Completed
@@ -104,3 +104,31 @@
   - `data/processed/cleaned_gps_data.csv`
   - `data/processed/rejected_gps_data.csv`
   - `data/processed/cleaning_summary.json`
+
+---
+
+## Day 4: PySpark Distributed Data Processing Scaffolding & Compatibility Audit
+**Date**: November 18, 2026
+**Engineering Domain**: Distributed Data Engineering & PySpark Architecture
+**Status**: Completed & Verified
+
+### 1. Environment & Java 21 Audit Findings
+- **Java Runtime**: Temurin OpenJDK 21.0.12.1 LTS located at `C:\Dekstop\bin\java.exe`.
+- **JAVA_HOME Conflict**: User `JAVA_HOME` points to IntelliJ JBR (OpenJDK 25.0.4), while System `JAVA_HOME` points to `C:\Dekstop` (OpenJDK 21). PySpark must be configured to use OpenJDK 21.
+- **Java 21 JVM Requirements**: PySpark 3.5.x on Java 21 requires JVM `--add-opens` flags for Java base modules (`java.lang`, `java.nio`, `java.io`, `java.util`, `sun.nio.ch`).
+- **Windows Hadoop Binaries**: Native Hadoop utilities (`winutils.exe` and `hadoop.dll`) are missing from the system.
+- **Package Status**: `pyspark` and `pyarrow` are not yet installed in `.venv`. In adherence to project constraints, they are reported for user approval before installation.
+
+### 2. Deliverables Completed
+- [x] Implemented `PySparkGPSProcessor` and `ProcessingMetrics` in `src/member1_data_eng/spatial_processing/pyspark_processor.py`.
+- [x] Defined explicit StructType schema with mandatory columns and strict data types.
+- [x] Configured Java 21 JVM `--add-opens` compatibility options in `SparkSession` builder.
+- [x] Designed DataFrame validation: checks required columns, data types, nulls, and duplicate ping IDs.
+- [x] Structured distributed aggregation logic:
+  - Total GPS pings
+  - Unique devices
+  - Device-wise ping counts
+  - Hourly GPS activity
+  - Average and maximum speed per device
+- [x] Designed Parquet table output under `data/processed/spark_metrics/`.
+- [x] Created 7 new unit tests in `tests/test_pyspark_processor.py` (31 passed, 1 skipped cleanly).
