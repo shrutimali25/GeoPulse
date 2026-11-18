@@ -1,4 +1,4 @@
-# GeoPulse – Hyper-Local Retail Mobility Analytics
+# GeoPulse â€“ Hyper-Local Retail Mobility Analytics
 
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
 [![Apache Spark](https://img.shields.io/badge/Apache%20Spark-3.5.1-orange)](https://spark.apache.org/)
@@ -105,17 +105,17 @@ The project is structured with clear separation of engineering domains:
 
 ```
 src/
-├── member1_data_eng/          <-- Data Engineering & Spatial Pipeline
-│   ├── generator/             <-- Synthetic GPS trajectory simulation
-│   ├── validation/            <-- Pydantic schema validation & quality gates
-│   ├── spatial_processing/    <-- PySpark & Apache Sedona spatial jobs
-│   ├── warehouse/             <-- Snowflake staging and loader
-│   └── orchestration/         <-- Apache Airflow DAGs
-├── member2_analytics_viz/     <-- Analytics Engineering & Visualization
-│   ├── dbt_transforms/        <-- dbt models (staging, intermediate, marts)
-│   ├── api/                   <-- FastAPI backend serving metrics & GeoJSON
-│   └── dashboard/             <-- React + Kepler.gl frontend application
-└── common/                    <-- Shared configurations, logger, and utilities
+â”œâ”€â”€ member1_data_eng/          <-- Data Engineering & Spatial Pipeline
+â”‚   â”œâ”€â”€ generator/             <-- Synthetic GPS trajectory simulation
+â”‚   â”œâ”€â”€ validation/            <-- Pydantic schema validation & quality gates
+â”‚   â”œâ”€â”€ spatial_processing/    <-- PySpark & Apache Sedona spatial jobs
+â”‚   â”œâ”€â”€ warehouse/             <-- Snowflake staging and loader
+â”‚   â””â”€â”€ orchestration/         <-- Apache Airflow DAGs
+â”œâ”€â”€ member2_analytics_viz/     <-- Analytics Engineering & Visualization
+â”‚   â”œâ”€â”€ dbt_transforms/        <-- dbt models (staging, intermediate, marts)
+â”‚   â”œâ”€â”€ api/                   <-- FastAPI backend serving metrics & GeoJSON
+â”‚   â””â”€â”€ dashboard/             <-- React + Kepler.gl frontend application
+â””â”€â”€ common/                    <-- Shared configurations, logger, and utilities
 ```
 
 ### Data Engineering & Spatial Analysis
@@ -138,39 +138,39 @@ src/
 
 ```
 GeoPulse/
-├── .github/
-│   └── workflows/
-│       └── ci.yml                     # Continuous integration workflow
-├── config/
-│   ├── base.yaml                      # Core project & study zone configuration
-│   └── snowflake.template.env         # Snowflake credentials template
-├── data/
-│   ├── raw/                           # Raw simulated GPS pings (gitignored)
-│   ├── processed/                     # Cleaned spatial parquet files (gitignored)
-│   ├── spatial/                       # Store polygons & study zone GeoJSONs
-│   │   └── mall_boundaries.geojson   # Sample Koramangala retail POIs
-│   └── sample/                        # Schema fixtures for unit tests
-│       └── sample_gps_schema.json
-├── docs/
-│   ├── architecture.md                # System architecture specification
-│   ├── daily_progress.md              # Daily progress tracker & work logs
-│   ├── project_plan.md                # Sprint-by-sprint implementation plan
-│   └── setup_guide.md                 # Detailed local setup & troubleshooting
-├── src/
-│   ├── common/                        # Shared logger & configuration loaders
-│   ├── member1_data_eng/              # Data engineering & spatial pipeline
-│   └── member2_analytics_viz/         # Analytics engineering, dbt models, API & Kepler.gl dashboard
-├── tests/                             # Unit and integration test suites
-├── .env.example                       # Environment variables template
-├── .gitignore                         # Git exclusion rules
-├── pyproject.toml                     # Package & linter configuration
-├── requirements.txt                   # Lightweight core dependencies (Day 1)
-├── requirements-dev.txt               # Testing & linting tools
-├── requirements-spatial.txt           # PySpark, Sedona, GeoPandas (Phase 2)
-└── requirements-snowflake.txt         # Snowflake connector & dbt (Phase 3)
+â”œâ”€â”€ .github/
+â”‚   â””â”€â”€ workflows/
+â”‚       â””â”€â”€ ci.yml                     # Continuous integration workflow
+â”œâ”€â”€ config/
+â”‚   â”œâ”€â”€ base.yaml                      # Core project & study zone configuration
+â”‚   â””â”€â”€ snowflake.template.env         # Snowflake credentials template
+â”œâ”€â”€ data/
+â”‚   â”œâ”€â”€ raw/                           # Raw simulated GPS pings (gitignored)
+â”‚   â”œâ”€â”€ processed/                     # Cleaned spatial parquet files (gitignored)
+â”‚   â”œâ”€â”€ spatial/                       # Store polygons & study zone GeoJSONs
+â”‚   â”‚   â””â”€â”€ mall_boundaries.geojson   # Sample Koramangala retail POIs
+â”‚   â””â”€â”€ sample/                        # Schema fixtures for unit tests
+â”‚       â””â”€â”€ sample_gps_schema.json
+â”œâ”€â”€ docs/
+â”‚   â”œâ”€â”€ architecture.md                # System architecture specification
+â”‚   â”œâ”€â”€ daily_progress.md              # Daily progress tracker & work logs
+â”‚   â”œâ”€â”€ project_plan.md                # Sprint-by-sprint implementation plan
+â”‚   â””â”€â”€ setup_guide.md                 # Detailed local setup & troubleshooting
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ common/                        # Shared logger & configuration loaders
+â”‚   â”œâ”€â”€ member1_data_eng/              # Data engineering & spatial pipeline
+â”‚   â””â”€â”€ member2_analytics_viz/         # Analytics engineering, dbt models, API & Kepler.gl dashboard
+â”œâ”€â”€ tests/                             # Unit and integration test suites
+â”œâ”€â”€ .env.example                       # Environment variables template
+â”œâ”€â”€ .gitignore                         # Git exclusion rules
+â”œâ”€â”€ pyproject.toml                     # Package & linter configuration
+â”œâ”€â”€ requirements.txt                   # Lightweight core dependencies (Day 1)
+â”œâ”€â”€ requirements-dev.txt               # Testing & linting tools
+â”œâ”€â”€ requirements-spatial.txt           # PySpark, Sedona, GeoPandas (Phase 2)
+â””â”€â”€ requirements-snowflake.txt         # Snowflake connector & dbt (Phase 3)
 ```
 
 ---
 
 ## 7. License
-Academic Engineering Project – Designed and developed for demonstration and educational purposes.
+Academic Engineering Project â€“ Designed and developed for demonstration and educational purposes.
