@@ -132,3 +132,49 @@
   - Average and maximum speed per device
 - [x] Designed Parquet table output under `data/processed/spark_metrics/`.
 - [x] Created 7 new unit tests in `tests/test_pyspark_processor.py` (31 passed, 1 skipped cleanly).
+
+---
+
+## Day 5: Store Locations & 500m Catchment Area Generation
+**Date**: November 26, 2026
+**Engineering Domain**: Spatial Data Engineering & Catchment Area Analytics
+**Status**: Completed & Verified
+
+### 1. Objectives & Approach
+- Ingested and validated the 5 designated retail store Points of Interest (POIs) in Koramangala from `config/base.yaml` and `POICatalog`.
+- Built modular spatial analysis pipeline in `src/member1_data_eng/spatial_processing/catchment_generator.py`.
+- Formulated metric buffering using projected coordinate systems: WGS 84 / UTM Zone 43N (`EPSG:32643`) was selected as the metric projection for Bengaluru, avoiding angular distortion from naive degree-based buffering.
+- Generated circular 500-meter catchment area buffer polygons around each store location using GeoPandas and Shapely.
+- Re-projected all geometries back to WGS 84 (`EPSG:4326`) for standard web/GeoJSON interoperability.
+- Validated topological correctness and non-empty geometries for 100% of generated polygons.
+
+### 2. Deliverables Completed
+- [x] Implemented `StoreCatchmentGenerator`, `CatchmentSummary`, and `validate_store_records` in `src/member1_data_eng/spatial_processing/catchment_generator.py`.
+- [x] Validated store ID uniqueness, mandatory fields, and geographic coordinate ranges (-90 to 90 lat, -180 to 180 lon) across all 5 stores.
+- [x] Converted store coordinates into Point spatial geometries with CRS `EPSG:4326`.
+- [x] Enforced strict projected metric buffering (`EPSG:32643`) and rejected direct degree-based buffering.
+- [x] Generated true circular 500m buffers with smooth polygon boundaries (`quad_segs=16`, 64 segments per circle).
+- [x] Reprojected polygons to `EPSG:4326` and validated `geom.is_valid` across all features.
+- [x] Generated and verified spatial datasets:
+  - `data/spatial/store_locations.geojson`: FeatureCollection of 5 Point geometries with store attributes.
+  - `data/spatial/store_catchments_500m.geojson`: FeatureCollection of 5 Polygon catchment areas with 500m radius and metric area ($\approx 784,137\text{ m}^2$).
+  - `data/spatial/catchment_generation_summary.json`: Statistical processing summary with bounds, CRS, and validation results.
+- [x] Authored 16 new unit tests in `tests/test_catchment_generator.py`.
+- [x] Executed full test suite (`python -m pytest -q`): 48/48 tests passing cleanly in WSL with Python 3.12 and Java 17.
+
+### 3. Processing Results on Retail Stores
+- **Total Stores Ingested**: 5
+- **Stores Successfully Processed**: 5
+- **Store IDs**:
+  1. `RET_MALL_FORUM_001` (Forum Mall Koramangala, Shopping Mall)
+  2. `RET_CAFE_STARBUCKS_002` (Starbucks 80ft Road, Cafe & Dining)
+  3. `RET_ELEC_CROMA_003` (Croma Electronics 100ft Rd, Electronics)
+  4. `RET_GROC_NATURES_BASKET_004` (Nature's Basket 4th Block, Supermarket)
+  5. `RET_FASH_ZARA_005` (Zara Koramangala Hub, Apparel)
+- **Catchment Buffer Radius**: 500.0 meters
+- **Source CRS**: `EPSG:4326` (WGS 84 degrees)
+- **Projected CRS for Buffering**: `EPSG:32643` (UTM Zone 43N meters)
+- **Output CRS**: `EPSG:4326` (GeoJSON standard)
+- **Catchment Area per Store**: $\approx 784,137.12\text{ m}^2$ ($\pi \times 500^2$ with 64-segment approximation)
+- **Geometry Validity**: 100% valid (0 invalid, 0 repaired)
+- **Unit Test Outcomes**: 48 passed, 0 failed, 0 errors (100% pass rate)

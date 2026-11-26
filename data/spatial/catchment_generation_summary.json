@@ -1,0 +1,121 @@
+{
+  "total_stores": 5,
+  "processed_stores": 5,
+  "buffer_radius_meters": 500.0,
+  "source_crs": "EPSG:4326",
+  "projected_crs": "EPSG:32643",
+  "output_crs": "EPSG:4326",
+  "all_geometries_valid": true,
+  "store_ids": [
+    "RET_MALL_FORUM_001",
+    "RET_CAFE_STARBUCKS_002",
+    "RET_ELEC_CROMA_003",
+    "RET_GROC_NATURES_BASKET_004",
+    "RET_FASH_ZARA_005"
+  ],
+  "stores": [
+    {
+      "store_id": "RET_MALL_FORUM_001",
+      "name": "Forum Mall Koramangala",
+      "category": "Shopping Mall",
+      "center_latitude": 12.9345,
+      "center_longitude": 77.611,
+      "buffer_radius_meters": 500.0,
+      "area_sq_meters": 784137.12,
+      "geometry_type": "Polygon",
+      "is_valid": true,
+      "bounds_wgs84": {
+        "min_lon": 77.606395,
+        "min_lat": 12.929983,
+        "max_lon": 77.615605,
+        "max_lat": 12.939017
+      }
+    },
+    {
+      "store_id": "RET_CAFE_STARBUCKS_002",
+      "name": "Starbucks 80ft Road",
+      "category": "Cafe & Dining",
+      "center_latitude": 12.9372,
+      "center_longitude": 77.6215,
+      "buffer_radius_meters": 500.0,
+      "area_sq_meters": 784137.12,
+      "geometry_type": "Polygon",
+      "is_valid": true,
+      "bounds_wgs84": {
+        "min_lon": 77.616895,
+        "min_lat": 12.932683,
+        "max_lon": 77.626105,
+        "max_lat": 12.941717
+      }
+    },
+    {
+      "store_id": "RET_ELEC_CROMA_003",
+      "name": "Croma Electronics 100ft Rd",
+      "category": "Electronics",
+      "center_latitude": 12.9298,
+      "center_longitude": 77.6288,
+      "buffer_radius_meters": 500.0,
+      "area_sq_meters": 784137.12,
+      "geometry_type": "Polygon",
+      "is_valid": true,
+      "bounds_wgs84": {
+        "min_lon": 77.624195,
+        "min_lat": 12.925283,
+        "max_lon": 77.633405,
+        "max_lat": 12.934317
+      }
+    },
+    {
+      "store_id": "RET_GROC_NATURES_BASKET_004",
+      "name": "Nature's Basket 4th Block",
+      "category": "Supermarket",
+      "center_latitude": 12.9312,
+      "center_longitude": 77.632,
+      "buffer_radius_meters": 500.0,
+      "area_sq_meters": 784137.12,
+      "geometry_type": "Polygon",
+      "is_valid": true,
+      "bounds_wgs84": {
+        "min_lon": 77.627395,
+        "min_lat": 12.926683,
+        "max_lon": 77.636605,
+        "max_lat": 12.935717
+      }
+    },
+    {
+      "store_id": "RET_FASH_ZARA_005",
+      "name": "Zara Koramangala Hub",
+      "category": "Apparel",
+      "center_latitude": 12.935,
+      "center_longitude": 77.6115,
+      "buffer_radius_meters": 500.0,
+      "area_sq_meters": 784137.12,
+      "geometry_type": "Polygon",
+      "is_valid": true,
+      "bounds_wgs84": {
+        "min_lon": 77.606895,
+        "min_lat": 12.930483,
+        "max_lon": 77.616105,
+        "max_lat": 12.939517
+      }
+    }
+  ],
+  "output_files": {
+    "store_locations_geojson": "/mnt/d/Projects/GeoPulse/data/spatial/store_locations.geojson",
+    "store_catchments_geojson": "/mnt/d/Projects/GeoPulse/data/spatial/store_catchments_500m.geojson",
+    "summary_json": "/mnt/d/Projects/GeoPulse/data/spatial/catchment_generation_summary.json"
+  },
+  "validation": {
+    "is_valid": true,
+    "store_count": 5,
+    "unique_store_ids": [
+      "RET_MALL_FORUM_001",
+      "RET_CAFE_STARBUCKS_002",
+      "RET_ELEC_CROMA_003",
+      "RET_GROC_NATURES_BASKET_004",
+      "RET_FASH_ZARA_005"
+    ],
+    "errors": []
+  },
+  "generated_at_utc": "2026-11-26T03:50:26.555502+00:00"
+}

@@ -224,6 +224,7 @@ def test_batch_simulation_output(tmp_path, simulator):
         device_count=4,
         duration_hours=1,  # 1 hour = 120 pings per device * 4 = 480 pings
         output_dir=str(output_dir),
+        output_format="jsonl",
         batch_size=2,
     )
 
