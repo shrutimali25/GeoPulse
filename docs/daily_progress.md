@@ -178,3 +178,55 @@
 - **Catchment Area per Store**: $\approx 784,137.12\text{ m}^2$ ($\pi \times 500^2$ with 64-segment approximation)
 - **Geometry Validity**: 100% valid (0 invalid, 0 repaired)
 - **Unit Test Outcomes**: 48 passed, 0 failed, 0 errors (100% pass rate)
+
+---
+
+## Day 6: Store Visit Detection & Spatial Join
+**Date**: November 26, 2026
+**Engineering Domain**: Spatial Analytics & Visit Event Detection
+**Status**: Completed & Verified
+
+### 1. Objectives & Approach
+- Ingested cleaned GPS trajectory data (300 pings across 5 synthetic devices) and the 500m store catchment polygons (`data/spatial/store_catchments_500m.geojson`).
+- Configured point-in-polygon spatial join engine in `src/member1_data_eng/spatial_processing/sedona_spatial_joins.py`.
+- Sessionized continuous temporal intervals per device and store in `src/member1_data_eng/spatial_processing/visit_detector.py` and `mobility_metrics.py` using a 5-minute maximum session gap timeout (`max_session_gap_seconds: 300`).
+- Computed dwell durations (`dwell_duration_seconds` and `dwell_duration_minutes`), relevant GPS ping counts, and average/maximum movement speeds.
+- Clearly separated broad **catchment presence** (transits / pass-throughs within 500m radius) from **confirmed physical retail store visits** (requiring $\ge 5\text{ minutes}$ dwell duration, low pedestrian speed $\le 1.5\text{ m/s}$, and $\ge 3$ consecutive pings).
+- Enforced strict data validation: caught nulls, missing columns, coordinate range violations, negative dwell durations, and duplicate event IDs.
+- Persisted analytical deliverables to Parquet, CSV, and statistical JSON audit formats.
+
+### 2. Deliverables Completed
+- [x] Implemented `SedonaSpatialJoinEngine` in `src/member1_data_eng/spatial_processing/sedona_spatial_joins.py` with support for Apache Sedona and optimized GeoPandas STRtree spatial indexing.
+- [x] Implemented `StoreVisitDetector`, `StoreVisitEvent`, `VisitDetectionSummary`, and validators in `src/member1_data_eng/spatial_processing/visit_detector.py`.
+- [x] Implemented `MobilityMetricsCalculator.calculate_dwell_times()` in `src/member1_data_eng/spatial_processing/mobility_metrics.py`.
+- [x] Exported all Day 6 spatial join and visit detection classes in `src/member1_data_eng/spatial_processing/__init__.py`.
+- [x] Generated and validated analytical output files:
+  - `data/processed/store_catchment_events.parquet`: Partitioned/columnar table of 9 detected visit events.
+  - `data/processed/store_catchment_events.csv`: Flat tabular export of visit events with complete metadata.
+  - `data/processed/store_visit_detection_summary.json`: Detailed execution summary, store visit breakdown, and dwell statistics.
+- [x] Authored 9 new unit tests in `tests/test_visit_detector.py`.
+- [x] Executed full test suite (`python -m pytest -q`): 57/57 tests passing cleanly in WSL with Python 3.12 and Java 17.
+
+### 3. Processing Results on Cleaned Telemetry Dataset
+- **Total Input GPS Pings**: 300
+- **Pings Matched Inside 500m Catchments**: 258 (86.0% spatial match rate)
+- **Total Events Detected**: 9
+- **Confirmed Physical Store Visits**: 9
+- **Catchment Presence Transits**: 0 (all 9 sessions exceeded 5.0 min dwell with slow walking speed)
+- **Unique Devices Detected**: 5
+- **Stores Visited**:
+  - `RET_ELEC_CROMA_003` (Croma Electronics): 3 visits
+  - `RET_GROC_NATURES_BASKET_004` (Nature's Basket): 2 visits
+  - `RET_CAFE_STARBUCKS_002` (Starbucks): 2 visits
+  - `RET_MALL_FORUM_001` (Forum Mall): 1 visit
+  - `RET_FASH_ZARA_005` (Zara Hub): 1 visit
+- **Dwell Time Statistics**:
+  - Minimum Dwell: 5.0 minutes
+  - Maximum Dwell: 29.5 minutes
+  - Mean Dwell: 13.94 minutes
+- **Validation Audit**:
+  - Coordinate Range Violations: 0
+  - Negative Dwell Durations: 0
+  - Duplicate Event IDs: 0
+  - Inverted Timestamps: 0
+- **Unit Test Outcomes**: 57 passed, 0 failed, 0 errors (100% pass rate)
