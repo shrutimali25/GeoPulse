@@ -8,7 +8,17 @@ from src.member1_data_eng.spatial_processing.catchment_generator import (
     StoreValidationResult,
     validate_store_records,
 )
-from src.member1_data_eng.spatial_processing.mobility_metrics import MobilityMetricsCalculator
+from src.member1_data_eng.spatial_processing.mobility_metrics import (
+    MobilityMetricsCalculator,
+    StoreMobilityAnalytics,
+    compute_device_mobility_analytics,
+    compute_hourly_distribution,
+    compute_hourly_visit_analytics,
+    compute_store_visit_analytics,
+    generate_analytics_summary,
+    run_analytics_pipeline,
+    validate_visit_events_dataframe,
+)
 from src.member1_data_eng.spatial_processing.pyspark_processor import (
     GPS_TELEMETRY_SCHEMA_DICT,
     REQUIRED_COLUMNS,
@@ -44,6 +54,14 @@ __all__ = [
     "StoreVisitEvent",
     "VisitDetectionSummary",
     "MobilityMetricsCalculator",
+    "StoreMobilityAnalytics",
     "validate_input_pings",
     "validate_visit_events",
+    "validate_visit_events_dataframe",
+    "compute_store_visit_analytics",
+    "compute_device_mobility_analytics",
+    "compute_hourly_visit_analytics",
+    "compute_hourly_distribution",
+    "generate_analytics_summary",
+    "run_analytics_pipeline",
 ]

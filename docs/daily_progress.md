@@ -230,3 +230,73 @@
   - Duplicate Event IDs: 0
   - Inverted Timestamps: 0
 - **Unit Test Outcomes**: 57 passed, 0 failed, 0 errors (100% pass rate)
+
+---
+
+## Day 7: Store Visit Analytics & Mobility Insights
+**Date**: November 28, 2026
+**Engineering Domain**: Data Engineering & Mobility Analytics
+**Status**: Completed & Verified
+
+### 1. Objectives & Approach
+- Ingested detected store visit events (`data/processed/store_catchment_events.csv` and `.parquet`) generated during Day 6 spatial join and sessionization.
+- Formulated business-level mobility aggregations across three primary analytical dimensions:
+  1. **Store Visit Analytics**: Total visit volume, confirmed visit count, pass-through transits, unique customer device reach, total dwell volume, and granular dwell statistics (average, minimum, maximum dwell minutes).
+  2. **Device Mobility Profiling**: Per-device visit frequency, store diversity (total vs. unique stores visited), total dwell commitment, average dwell per stop, and temporal bounds (`first_visit_utc`, `last_visit_utc`).
+  3. **Temporal & Hourly Analytics**: Hour-of-day visit distribution (0–23 UTC), store-level hourly profiles, and automated peak visiting hour detection.
+- Enforced strict data validation rules in `validate_visit_events_dataframe`:
+  - Verified mandatory schema identifiers and metrics.
+  - Checked for non-negative dwell durations and proper chronological ordering (`exit_timestamp_utc >= entry_timestamp_utc`).
+  - Enforced uniqueness of event identifiers and safe handling of empty or single-record datasets.
+- Implemented automated pipeline execution via `run_analytics_pipeline()` and exposed high-level programmatic interfaces via `MobilityMetricsCalculator` and `StoreMobilityAnalytics`.
+- Persisted analytical deliverables to `data/processed/analytics/` in both tabular CSV and structured JSON summary formats.
+
+### 2. Deliverables Completed
+- [x] Extended `src/member1_data_eng/spatial_processing/mobility_metrics.py` with:
+  - `validate_visit_events_dataframe`: Schema and data integrity validator.
+  - `compute_store_visit_analytics`: Store-level volume, reach, and dwell duration metrics.
+  - `compute_device_mobility_analytics`: Device-level mobility profiling and store diversity metrics.
+  - `compute_hourly_visit_analytics`: Store-level hourly breakdown and peak hour flags.
+  - `compute_hourly_distribution`: Dataset-wide aggregate hourly distribution.
+  - `generate_analytics_summary`: JSON-serializable structured summary dictionary.
+  - `run_analytics_pipeline`: End-to-end pipeline execution and file persistence.
+  - `MobilityMetricsCalculator` / `StoreMobilityAnalytics`: Unified object-oriented analytics interface.
+- [x] Updated module exports in `src/member1_data_eng/spatial_processing/__init__.py`.
+- [x] Generated four production analytics artifacts in `data/processed/analytics/`:
+  - `store_visit_analytics.csv`: Store-wise visit counts, device reach, dwell metrics, and store categories.
+  - `device_mobility_analytics.csv`: Per-device mobility profiles, store diversity, dwell times, and visit windows.
+  - `hourly_visit_analytics.csv`: Store-by-hour visit volume, unique devices, average dwell, and peak hour flags.
+  - `mobility_analytics_summary.json`: Comprehensive executive summary with metadata, rankings, and mobility KPIs.
+- [x] Authored 11 comprehensive unit tests in `tests/test_mobility_analytics.py`.
+- [x] Verified complete project test suite: 68/68 passing tests (100% pass rate) with live Spark and spatial engines.
+
+### 3. Key Mobility Insights on Telemetry Dataset
+- **Total Detected Events**: 9 events across 5 synthetic devices and 5 retail stores.
+- **Confirmed Physical Visits**: 9 (100% visit confirmation rate under $\ge 5$ min dwell and low speed criteria).
+- **Catchment Presence Transits**: 0.
+- **Overall Dwell Statistics**:
+  - Total Dwell Volume: 125.50 minutes
+  - Average Dwell Time: 13.94 minutes
+  - Minimum Dwell: 5.00 minutes (`RET_MALL_FORUM_001`)
+  - Maximum Dwell: 29.50 minutes (`RET_CAFE_STARBUCKS_002`)
+- **Store-Level Performance**:
+  - `RET_ELEC_CROMA_003` (Croma Electronics): Most visited store (3 visits, 3 unique devices, 38.0 min total dwell, 12.67 min avg dwell).
+  - `RET_CAFE_STARBUCKS_002` (Starbucks 80ft Rd): Highest dwell engagement (2 visits, 2 unique devices, 52.5 min total dwell, 26.25 min avg dwell).
+  - `RET_GROC_NATURES_BASKET_004` (Nature's Basket): 2 visits, 2 unique devices, 24.5 min total dwell, 12.25 min avg dwell.
+  - `RET_FASH_ZARA_005` (Zara Hub): 1 visit, 1 unique device, 5.5 min dwell.
+  - `RET_MALL_FORUM_001` (Forum Mall): 1 visit, 1 unique device, 5.0 min dwell.
+- **Device Mobility Profiling**:
+  - Highest Diversity & Velocity: `DEV_00000002` visited 3 distinct retail stores (Croma, Zara, Forum Mall) with rapid dwell times averaging 5.33 minutes.
+  - Longest Dwell Loyalty: `DEV_00000003` dedicated 29.5 minutes to a single Starbucks visit.
+  - Average Stores Visited per Device: 1.80 stores.
+  - Average Dwell Time per Device: 25.10 minutes.
+- **Temporal Patterns**:
+  - Peak Visiting Hour: Hour 0 (midnight UTC block containing all 9 simulated events).
+  - Peak Hour Visit Volume: 9 visits.
+- **Validation Audit**:
+  - Missing Columns: 0
+  - Null / Missing Identifiers: 0
+  - Negative Dwell Durations: 0
+  - Timestamp Inversions: 0
+  - Duplicate Event IDs: 0
+- **Unit Test Outcomes**: 68 passed, 0 failed, 0 errors (100% pass rate).
