@@ -1,5 +1,11 @@
 """PySpark and distributed spatial analytics package."""
 
+from src.member1_data_eng.spatial_processing.cannibalization_analyzer import (
+    CannibalizationAnalyzer,
+    CannibalizationPairResult,
+    CannibalizationSummary,
+    classify_cannibalization_risk,
+)
 from src.member1_data_eng.spatial_processing.catchment_generator import (
     DEFAULT_BUFFER_RADIUS_METERS,
     DEFAULT_PROJECTED_CRS,
@@ -64,4 +70,8 @@ __all__ = [
     "compute_hourly_distribution",
     "generate_analytics_summary",
     "run_analytics_pipeline",
+    "CannibalizationAnalyzer",
+    "CannibalizationPairResult",
+    "CannibalizationSummary",
+    "classify_cannibalization_risk",
 ]

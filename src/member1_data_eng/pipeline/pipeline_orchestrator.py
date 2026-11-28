@@ -761,6 +761,91 @@ class GeoPulsePipelineOrchestrator:
             )
 
     # -------------------------------------------------------------------------
+    # STAGE: Cannibalization & Visitor Overlap Analysis
+    # -------------------------------------------------------------------------
+    def execute_cannibalization_analysis(
+        self,
+        events_path: Optional[Union[str, Path, Any]] = None,
+        catchments_path: Optional[Union[str, Path, Any]] = None,
+        output_dir: Optional[Union[str, Path]] = None,
+    ) -> StageExecutionRecord:
+        """Execute pairwise cannibalization and visitor overlap analysis.
+
+        Args:
+            events_path: Path to events CSV, or DataFrame.
+            catchments_path: Path to catchments GeoJSON, or GeoDataFrame.
+            output_dir: Output analytics directory.
+
+        Returns:
+            StageExecutionRecord detailing execution metrics.
+        """
+        stage_name = "cannibalization_analysis"
+        start_ts = datetime.now(timezone.utc)
+        logger.info(f"--- Starting Stage: {stage_name} ---")
+
+        events_src = events_path or (self.processed_dir / "store_catchment_events.csv")
+        catchments_src = catchments_path or (self.spatial_dir / "store_catchments_500m.geojson")
+        target_dir = Path(output_dir) if output_dir else self.analytics_dir
+
+        try:
+            from src.member1_data_eng.spatial_processing.cannibalization_analyzer import (
+                CannibalizationAnalyzer,
+            )
+
+            analyzer = CannibalizationAnalyzer(config=self.config)
+            summary = analyzer.run_analysis_pipeline(
+                events_path=events_src,
+                catchments_path=catchments_src,
+                output_dir=target_dir,
+            )
+
+            end_ts = datetime.now(timezone.utc)
+            duration = (end_ts - start_ts).total_seconds()
+            artifacts = list(summary.output_files.values())
+
+            record = StageExecutionRecord(
+                stage_name=stage_name,
+                stage_order=7,
+                start_time_utc=start_ts.isoformat(),
+                end_time_utc=end_ts.isoformat(),
+                duration_seconds=round(duration, 3),
+                status="SUCCESS",
+                input_records=summary.analysis_metadata.get("total_store_pairs", 10),
+                output_records=summary.analysis_metadata.get("total_store_pairs", 10),
+                artifacts_created=artifacts,
+                metrics={
+                    "pairs_with_catchment_overlap": summary.overall_summary.get(
+                        "pairs_with_catchment_overlap", 0
+                    ),
+                    "pairs_with_shared_visitors": summary.overall_summary.get(
+                        "pairs_with_shared_visitors", 0
+                    ),
+                    "risk_distribution": summary.risk_category_distribution,
+                },
+            )
+            logger.info(
+                f"Cannibalization analysis completed in {record.duration_seconds}s."
+            )
+            return record
+
+        except Exception as ex:
+            end_ts = datetime.now(timezone.utc)
+            duration = (end_ts - start_ts).total_seconds()
+            err_msg = str(ex)
+            logger.error(f"Cannibalization analysis failed: {err_msg}", exc_info=True)
+            return StageExecutionRecord(
+                stage_name=stage_name,
+                stage_order=7,
+                start_time_utc=start_ts.isoformat(),
+                end_time_utc=end_ts.isoformat(),
+                duration_seconds=round(duration, 3),
+                status="FAILED",
+                input_records=0,
+                output_records=0,
+                error_message=err_msg,
+            )
+
+    # -------------------------------------------------------------------------
     # STAGE 7: Data Quality Monitoring & Pipeline Summary
     # -------------------------------------------------------------------------
     def run_data_quality_audit(self) -> Dict[str, Any]:
@@ -1092,7 +1177,7 @@ class GeoPulsePipelineOrchestrator:
         }
 
     # -------------------------------------------------------------------------
-    # STAGE 7 Execution: Quality Audit & Pipeline Summary File
+    # STAGE 8 Execution: Quality Audit & Pipeline Summary File
     # -------------------------------------------------------------------------
     def execute_stage_7_quality_audit(
         self,
@@ -1124,7 +1209,7 @@ class GeoPulsePipelineOrchestrator:
 
             record = StageExecutionRecord(
                 stage_name=stage_name,
-                stage_order=7,
+                stage_order=8,
                 start_time_utc=start_ts.isoformat(),
                 end_time_utc=end_ts.isoformat(),
                 duration_seconds=round(duration, 3),
@@ -1152,7 +1237,7 @@ class GeoPulsePipelineOrchestrator:
             logger.error(f"Stage 7 failed: {err_msg}", exc_info=True)
             return StageExecutionRecord(
                 stage_name=stage_name,
-                stage_order=7,
+                stage_order=8,
                 start_time_utc=start_ts.isoformat(),
                 end_time_utc=end_ts.isoformat(),
                 duration_seconds=round(duration, 3),
@@ -1266,7 +1351,15 @@ class GeoPulsePipelineOrchestrator:
             raise PipelineExecutionError(s6.stage_name, s6.error_message or "Unknown error", s6)
 
         # ---------------------------------------------------------------------
-        # Stage 7: Quality Audit & Summary
+        # Stage 8: Cannibalization & Visitor Overlap Analysis
+        # ---------------------------------------------------------------------
+        s8 = self.execute_cannibalization_analysis()
+        stage_records.append(s8)
+        if s8.status == "FAILED" and fail_fast:
+            raise PipelineExecutionError(s8.stage_name, s8.error_message or "Unknown error", s8)
+
+        # ---------------------------------------------------------------------
+        # Stage 8: Quality Audit & Summary
         # ---------------------------------------------------------------------
         s7 = self.execute_stage_7_quality_audit(stage_records=stage_records)
         stage_records.append(s7)

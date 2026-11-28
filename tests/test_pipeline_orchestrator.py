@@ -205,7 +205,7 @@ def test_pipeline_fail_fast_on_invalid_input(isolated_orchestrator):
 
 
 def test_end_to_end_pipeline_execution_isolated(isolated_orchestrator):
-    """Verify complete 7-stage pipeline runs seamlessly in an isolated environment."""
+    """Verify complete 8-stage pipeline runs seamlessly in an isolated environment."""
     orch = isolated_orchestrator
     summary = orch.run_pipeline(
         run_generation=True,
@@ -219,8 +219,8 @@ def test_end_to_end_pipeline_execution_isolated(isolated_orchestrator):
 
     assert isinstance(summary, PipelineExecutionSummary)
     assert summary.overall_status == "SUCCESS"
-    assert summary.stages_executed == 7
-    assert summary.stages_succeeded == 7
+    assert summary.stages_executed == 8
+    assert summary.stages_succeeded == 8
     assert summary.stages_failed == 0
     assert summary.total_duration_seconds > 0.0
 
@@ -232,7 +232,7 @@ def test_end_to_end_pipeline_execution_isolated(isolated_orchestrator):
         loaded = json.load(f)
     assert loaded["execution_id"] == summary.execution_id
     assert loaded["overall_status"] == "SUCCESS"
-    assert len(loaded["stages"]) == 7
+    assert len(loaded["stages"]) == 8
     assert loaded["data_quality_report"]["quality_score_percentage"] == 100.0
 
 

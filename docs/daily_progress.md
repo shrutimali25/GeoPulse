@@ -354,3 +354,50 @@
   9. `CHECK_RECORD_COUNT_CONSISTENCY`: PASSED – Complete cross-table volume parity across events, store, and device tables.
 - **Overall Quality Score**: 100.0% (0 failed checks, 0 warnings).
 - **Unit Test Outcomes**: 80 passed, 0 failed, 0 errors (100% pass rate).
+
+---
+
+## Day 9: Cannibalization & Visitor Overlap Analysis
+**Date**: November 28, 2026
+**Engineering Domain**: Spatial Processing & Cannibalization Analytics
+**Status**: Completed & Verified
+
+### 1. Objectives & Analytical Methodology
+- Implemented pairwise retail store competition, visitor overlap, and geographic catchment interaction analysis to assess potential cannibalization across the Koramangala store network.
+- Clearly separated three analytical concepts:
+  1. **Geographic Catchment Overlap**: Intersection area of 500m circular catchment polygons calculated in projected metric CRS (`EPSG:32643`), and overlap percentage relative to the smaller store catchment.
+  2. **Observed Shared Visitor Overlap**: Actual customer devices visiting both stores, overlap percentage relative to the smaller visitor base ($\frac{|V_A \cap V_B|}{\min(|V_A|, |V_B|)} \times 100\%$), and Jaccard similarity ($\frac{|V_A \cap V_B|}{|V_A \cup V_B|}$).
+  3. **Cannibalization Risk Categorization**: Structured classification (`HIGH`, `MEDIUM`, `LOW`, `NEGLIGIBLE`) combining spatial proximity and customer co-visitation patterns.
+- **Important Sales Cannibalization Disclaimer**: Explicitly documented that shared visitor overlap and catchment intersection represent footfall co-presence and spatial competition, NOT definitive proof of lost sales or transactional cannibalization, as revenue figures are not captured in GPS mobility telemetry.
+
+### 2. Deliverables Completed
+- [x] Implemented `src/member1_data_eng/spatial_processing/cannibalization_analyzer.py` with:
+  - `CannibalizationAnalyzer`: End-to-end analyzer calculating visitor overlap, spatial intersection, and risk categories.
+  - `CannibalizationPairResult`: Dataclass for pairwise store comparison metrics.
+  - `CannibalizationSummary`: Executive summary dataclass with metadata, top pairs, and disclaimers.
+  - `classify_cannibalization_risk()`: Deterministic multi-dimensional risk evaluator.
+- [x] Exported new classes in `src/member1_data_eng/spatial_processing/__init__.py`.
+- [x] Added `execute_cannibalization_analysis()` in `GeoPulsePipelineOrchestrator` (`src/member1_data_eng/pipeline/pipeline_orchestrator.py`).
+- [x] Generated two production analytical artifacts in `data/processed/analytics/`:
+  - `cannibalization_analysis.csv`: Pairwise table of all 10 store pairs with unique visitors, shared visitors, Jaccard similarity, intersection area (m²), overlap percentage, and risk categories.
+  - `cannibalization_summary.json`: Executive JSON summary with overlap rankings, distribution, and business disclaimer.
+- [x] Authored 10 comprehensive unit tests in `tests/test_cannibalization_analyzer.py`.
+- [x] Executed complete project test suite: 90/90 passed (100% pass rate in 41.39s).
+
+### 3. Key Cannibalization & Overlap Findings
+- **Total Store Pairs Analyzed**: 10 pairwise combinations across 5 retail stores.
+- **Geographic Catchment Overlaps**: 2 pairs have intersecting 500m catchments:
+  - `RET_FASH_ZARA_005` & `RET_MALL_FORUM_001`: $706,749.00\text{ m}^2$ intersection area (**90.13% spatial overlap**; stores are adjacent in Koramangala Hub).
+  - `RET_ELEC_CROMA_003` & `RET_GROC_NATURES_BASKET_004`: $413,384.64\text{ m}^2$ intersection area (**52.72% spatial overlap**; stores are ~350m apart).
+- **Observed Shared Visitor Overlaps**: 4 pairs exhibited shared customer footfall:
+  - `RET_ELEC_CROMA_003` & `RET_GROC_NATURES_BASKET_004`: **2 shared visitors** (`DEV_00000001`, `DEV_00000004`), 100.0% visitor overlap, 0.6667 Jaccard similarity.
+  - `RET_FASH_ZARA_005` & `RET_MALL_FORUM_001`: **1 shared visitor** (`DEV_00000002`), 100.0% visitor overlap, 1.0 Jaccard similarity.
+  - `RET_ELEC_CROMA_003` & `RET_FASH_ZARA_005`: **1 shared visitor** (`DEV_00000002`), 100.0% visitor overlap, 0.3333 Jaccard similarity.
+  - `RET_ELEC_CROMA_003` & `RET_MALL_FORUM_001`: **1 shared visitor** (`DEV_00000002`), 100.0% visitor overlap, 0.3333 Jaccard similarity.
+- **Risk Category Distribution**:
+  - `HIGH` (2 pairs):
+    - `RET_ELEC_CROMA_003` & `RET_GROC_NATURES_BASKET_004` (both spatial 52.72% and visitor overlap 100.0%).
+    - `RET_FASH_ZARA_005` & `RET_MALL_FORUM_001` (both spatial 90.13% and visitor overlap 100.0%).
+  - `MEDIUM` (2 pairs): Cross-hub shopper journey (`DEV_00000002` visiting both Forum/Zara hub and Croma on 100ft Rd without physical catchment overlap).
+  - `NEGLIGIBLE` (6 pairs): Starbucks and remaining pairs with zero shared visitors and zero catchment overlap.
+- **Unit Test Outcomes**: 90 passed, 0 failed, 0 errors (100% pass rate).
